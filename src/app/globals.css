@@ -31,17 +31,15 @@ body {
   width: 6rem;
   border-radius: 0.25rem;
   border-width: 1px;
-  margin: 5px;
+  margin: 4px;
   border-color: rgb(148 163 184);
-  padding-left: 1.5rem; /* 6 * 0.25rem */
-  padding-right: 1.5rem; /* 6 * 0.25rem */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   padding-bottom: 6px;
-  padding-top: 0.5rem; /* 2 * 0.25rem */
-  font-size: 0.75rem; /* 12px varsayılan font büyüklüğü */
-  font-weight: 500; /* Varsayılan font ağırlığı */
-  /* text-transform: uppercase; */
-  line-height: 1.5; /* Varsayılan satır yüksekliği */
-  /* primary-700 renginin karşılığı */
+  padding-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
   color: #000;
   transition-property: all;
   transition-duration: 150ms;
@@ -52,17 +50,6 @@ body {
   border-color: rgb(148 163 184);
   background-color: rgb(226 232 240);
 }
-/* .button:focus {
-  border-color: rgb(118, 123, 129);
-  outline: none;
-  border-width: 2.5px;
-}
-.button:focus:ring-0 {
-  box-shadow: none;
-} */
-/* .button:active {
-  border-color: rgb(100 116 139);
-} */
 .button_active {
   outline-color: rgb(100, 85, 85);
   border-width: 12x;
@@ -70,16 +57,19 @@ body {
 
 .addBasketButton {
   width: 8rem;
+  border-color: rgb(219, 171, 11);
   font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .addBasketButton:hover {
   border-color: rgb(219, 171, 11);
   background-color: rgb(219, 171, 11);
 }
 
+/* tarayıcılarda input yukarı/aşağı okları gizle */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  /* tarayıcılarda inpu yukarı/aşağı okları gizle */
   -webkit-appearance: none;
   margin: 0;
 }

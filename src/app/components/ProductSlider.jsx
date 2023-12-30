@@ -8,25 +8,26 @@ const ProductSlider = ({ images }) => {
 
   return (
     <div>
-      <div className="container mx-auto h-[90vh] border-2 border-slate-950 ">
+      <div className="container items-center mx-auto h-[70vh] w-2/3">
         <div className="flex justify-center">
           <Image
             src={mainImg}
             alt="product main image"
-            width={400}
+            width={300}
             height={400}
             className=" h-auto rounded-lg"
+            priority={true}
           />
         </div>
 
-        <div className="mt-4 grid grid-cols-4 gap-x-1 border border-red-500 w-[20rem]">
+        <div className="mt-4 mx-auto grid grid-cols-4 gap-x-1 w-[20rem]">
           {images.map((image, index) => (
             <div key={index}>
               <Image
                 src={image}
                 alt="product alt image"
-                width={80}
-                height={100}
+                width={70}
+                height={80}
                 onClick={() => setMainImg(images[index])}
                 //* Let the selected photo be opacity-50
                 className={`cursor-pointer rounded-lg ${

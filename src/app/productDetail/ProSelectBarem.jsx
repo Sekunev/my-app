@@ -1,34 +1,36 @@
 "use client"; // This is a client component 👈🏽
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
-const ProSelectBarem = ({ info, setAddToCart, addToCart }) => {
-  const [inputValue, setInputValue] = useState(""); // Input değeri için state
+const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
+  const [inputValue, setInputValue] = useState("");
   const [amountStok, setAmountStok] = useState(0);
   const [selectedPrice, setSelectedPrice] = useState("");
   const [totalPriceState, setTotalPriceState] = useState(0);
 
-  function generateUniqueId() {
-    return "xxxxxxxx".replace(/[xy]/g, function (c) {
-      const r = (Math.random() * 16) | 0;
-      const v = c === "x" ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
-  const handleAddToCart = () => {
-    // Yeni bir ID oluşturabilir veya mevcut bir değeri kullanabilirsiniz
-    const newId = generateUniqueId(); // Örnek bir benzersiz ID oluşturma fonksiyonu
+  //? isAllDataFilled Checks whether all the data to be added to the cart is filled or not
+  const isAllDataFilled =
+    addToCart.size !== "" &&
+    addToCart.amount !== "" &&
+    addToCart.color !== "" &&
+    addToCart.price !== "" &&
+    addToCart.product !== "" &&
+    addToCart.totalPrice !== "";
 
+  //? Assign id to addToCart when adding to cart
+  const handleAddToCart = () => {
     setAddToCart((prev) => ({
       ...prev,
-      id: newId, // Yeni ID'yi "addToCart" içindeki "id" özelliğine ata
+      id: productVariant.id, // Yeni ID'yi "addToCart" içindeki "id" özelliğine ata
     }));
   };
 
-  // Input değeri değiştiğinde bu işlev çalışacak
+  // Prevent the entry of more than the stock quantity, other than numbers, and negative values into the input field
   const handleInputChange = (event) => {
     const { value } = event.target;
     const parsedValue = parseInt(value, 10);
-    // input alanına stok adedinden fazla, rakam dışında ve negatif değer girişini engelle
+
     if (
       !isNaN(parsedValue) &&
       parsedValue >= 0 &&
@@ -40,6 +42,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart }) => {
     }
   };
 
+  // Assign the maximum Quantity value of the last element of the array to Amount Stock state
   useEffect(() => {
     function getMaxQuantityLastItem(info) {
       const lastItem = info[info?.length - 1]; // Dizinin son elemanı
@@ -49,12 +52,15 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart }) => {
     setAmountStok(maxQuantity); // Durumu güncelle
   }, []);
 
+  //? Assign the relevant object in baremList to selectedInfo according to the value entered into input. Fill in the items to add to the cart
   useEffect(() => {
     const selectedInfo = info.find(
       (item) =>
         inputValue >= item.minimumQuantity && inputValue <= item.maximumQuantity
     );
-    // console.log("selectedInfo", selectedInfo);
+
+    // console.log("selectedInfo", selectedInfo);>> {minimumQuantity: 120, maximumQuantity: 599, price: 9.5}
+
     if (selectedInfo) {
       setSelectedPrice(selectedInfo.price);
       setAddToCart((prev) => ({
@@ -65,6 +71,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart }) => {
     }
   }, [inputValue, info, setAddToCart]);
 
+  //? Perform the necessary mathematical operation for totalPrice.
   useEffect(() => {
     // inputValue boşsa totalPrice'ı sıfırla
     if (inputValue === "") {
@@ -89,90 +96,120 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart }) => {
       calculateTotalPrice();
     }
   }, [inputValue, selectedPrice, setAddToCart]);
-
-  // console.log("info", info[info.length - 1].maximumQuantity);
-  // console.log("amountStok", amountStok);
-  // console.log("addToCart", addToCart);
-  // console.log("addToCart", addToCart);
-
+  console.log("addToCart", addToCart);
   return (
-    <div className="container  ml-3 bg-slate-200 items-center p-2">
-      <div className="flex justify-start">
-        <div className="flex items-center">
-          <p className="w-24 text-sm">
-            Toptan Fiyat <sub>(Adet)</sub>
-          </p>
+    <div className="container mt-3">
+      <div className="bg-slate-200 p-2 w-2/3">
+        {/*section Toptan Fiyat */}
+        <div className="flex justify-start">
+          <div className="flex items-center">
+            <p className="w-24 text-sm">
+              Toptan Fiyat <sub>(Adet)</sub>
+            </p>
+            <span>:</span>
+          </div>
+          <div className="flex items-center ml-1">
+            {info.map((item, index) => (
+              <div
+                key={index}
+                className={`flex items-center border-r-2 border-slate-400 rounded-sm ${
+                  index === info.length - 1 ? "last:border-0" : "" //? To remove the right border of the last element
+                } ${
+                  inputValue >= item.minimumQuantity &&
+                  inputValue <= item.maximumQuantity
+                    ? "bg-amber-100" // Amber background if the input value contains the minimum and maximum rangeplan
+                    : ""
+                }`}
+              >
+                <div className="flex flex-col  items-center">
+                  <p className="m-3 text-xs">
+                    {index === info.length - 1
+                      ? `${item.minimumQuantity} +`
+                      : `${item.minimumQuantity}-${item.maximumQuantity}`}
+                  </p>
+                  <p className="text-xs">{item.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/*section İnput & Stok adedi. */}
+        <div className="flex justify-between  mt-5">
+          <div className="flex items-center ">
+            <label className=" w-24 text-sm">Adet</label>
+            <span>:</span>
+            <input
+              type="number"
+              value={inputValue}
+              onChange={handleInputChange}
+              min="100"
+              max="10"
+              className=" ml-1 rounded p-1 w-16 text-xs text-center border-gray-300 focus:border-gray-400 outline-none px-4 "
+            />
+            <p className="text-xs ml-2">Adet</p>
+          </div>
+          <div className="flex items-center shadow-2xl rounded-lg bg-slate-50 text-green-600 p-2 mr-5">
+            <p className="text-xs items-center shadow-2xl font-medium">
+              Stok adedi:{" "}
+              <span className="font-bold">
+                {String(amountStok).slice(0, 4)}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      {/*section Toplam & Stok adedi. */}
+      <div className="flex mt-3 ml-2">
+        <div className="flex">
+          <p className="font-bold w-24 text-sm">Toplam</p>
           <span>:</span>
         </div>
-        <div className="flex items-center">
-          {info.map((item, index) => (
-            <div
-              key={index}
-              className={`flex items-center border-r-2 border-slate-400 ${
-                index === info.length - 1 ? "last:border-0" : "" //? To remove the right border of the last element
-              } ${
-                inputValue >= item.minimumQuantity &&
-                inputValue <= item.maximumQuantity
-                  ? "bg-amber-100" // Input değeri, minimum ve maksimum aralığı içeriyorsa sarı arka plan
-                  : ""
-              }`}
-            >
-              <div className="flex flex-col  items-center">
-                <p className="m-3 text-xs">
-                  {index === info.length - 1
-                    ? `${item.minimumQuantity} +`
-                    : `${item.minimumQuantity}-${item.maximumQuantity}`}
-                </p>
-                <p className="text-xs">{item.price}</p>
-              </div>
-            </div>
-          ))}
+        <div className="">
+          <div className="flex items-center">
+            <p className="font-bold ml-1">
+              {totalPriceState.toLocaleString("tr-TR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+              TL
+            </p>
+          </div>
+          <div className="flex m-1">
+            <Image
+              src="/cargo.svg"
+              alt="Cargo Icon"
+              width={15}
+              height={15}
+              className=" mr-1"
+              priority={true}
+            />
+            <p className="text-xs ml-1">
+              Kargo Ücreti{" "}
+              <span className="text-cyan-500 text-xs">Alıcı Öder</span>{" "}
+            </p>
+          </div>
         </div>
       </div>
-
-      <div className="flex justify-between  mt-2">
-        <div className="flex items-center">
-          <label className="text-xs mr-2">Adet:</label>
-          <input
-            type="number"
-            value={inputValue}
-            onChange={handleInputChange}
-            min="100"
-            max="10"
-            className=" rounded p-1 w-16 text-xs text-center border-gray-300 focus:border-gray-400 outline-none px-4 "
-          />
-          <p className="text-xs ml-2">Adet</p>
-        </div>
-        <div className="flex items-center shadow-2xl rounded-lg bg-slate-300 text-green-600 p-1">
-          <p className="text-xs items-center shadow-2xl font-semibold">
-            Stok adedi:{" "}
-            <span className="font-bold">{String(amountStok).slice(0, 4)}</span>
-          </p>
-        </div>
-      </div>
-
-      <div className="flex  mt-3 ">
-        <div className="mt-1">
-          <p className="font-bold text-xs">
-            Toplam<span>:</span>
-          </p>
-        </div>
-        <div className=" ">
-          <p className="font-bold">{totalPriceState.toFixed(2)} TL</p>
-          <p className="text-xs">
-            Kargo Ücreti{" "}
-            <span className="text-cyan-500 text-xs">Alıcı Öder</span>{" "}
-          </p>
-        </div>
-      </div>
-      <div>
+      {/*section SEPETE EKLE */}
+      <div className="ml-[6.8rem] mt-2">
         <button
           type="button"
-          className="button addBasketButton font-bold bg-amber-400 w-40"
-          onClick={handleAddToCart}
+          className="button addBasketButton font-bold text-white bg-amber-400 w-40"
+          onClick={() => {
+            // handleAddToCart();
+            // toast.success("Sepete Eklendi!");
+            if (!isAllDataFilled) {
+              toast.error("Sepet!");
+              return;
+            }
+            handleAddToCart();
+            toast.success("Sepete Eklendi!");
+          }}
+          // disabled={!isAllDataFilled}
         >
           SEPETE EKLE
         </button>
+        <span className="text-cyan-500 text-xs ml-2">Ödeme Seçenekleri</span>
       </div>
     </div>
   );
