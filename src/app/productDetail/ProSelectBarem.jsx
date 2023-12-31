@@ -96,7 +96,9 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
       calculateTotalPrice();
     }
   }, [inputValue, selectedPrice, setAddToCart]);
+
   console.log("addToCart", addToCart);
+
   return (
     <div className="container mt-3">
       <div className="bg-slate-200 p-2 w-2/3">
