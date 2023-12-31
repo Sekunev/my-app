@@ -6,7 +6,6 @@ import AddToCart from "./AddToCart";
 
 const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
   const [inputValue, setInputValue] = useState("");
-  console.log(inputValue);
   const [amountStok, setAmountStok] = useState(0); // *The amount of stock
   const [selectedPrice, setSelectedPrice] = useState(""); //* Selected price
   const [totalPriceState, setTotalPriceState] = useState(0);
