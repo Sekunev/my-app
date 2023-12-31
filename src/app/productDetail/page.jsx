@@ -47,6 +47,7 @@ const ProductDetail = () => {
             baremList={data.baremList}
             setAddToCart={setAddToCart}
             setVariant={setVariant}
+            variant={variant}
           />
           <ProSelectBarem
             info={data.baremList}

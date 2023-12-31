@@ -1,7 +1,6 @@
 "use client"; // This is a client component 👈🏽
 import Image from "next/image";
 import React, { useState } from "react";
-import ProSelectButton from "./ProSelectButton";
 
 const ProSelectAtt = ({
   title,
@@ -10,10 +9,10 @@ const ProSelectAtt = ({
   baremList,
   setVariant,
   data,
+  variant,
 }) => {
   const [mainColor, setMainColor] = useState(info[0].values[0]);
   const [mainSize, setMainSize] = useState(info[1].values[0]);
-  const [State, setState] = useState();
 
   const getMinPrice = () => {
     const minPrice = Math.min(...baremList.map((item) => item.price));
@@ -31,39 +30,6 @@ const ProSelectAtt = ({
       [key]: value,
       product: title,
     }));
-  };
-
-  // Kullanıcı seçimi üzerine tüm seçenekleri kontrol etme
-  const updateSelectableAttributes = (selectedColor) => {
-    const selectedColorVariants = data.productVariants.filter((variant) =>
-      variant.attributes.find(
-        (attr) => attr.name === "Renk" && attr.value === selectedColor
-      )
-    );
-
-    const availableSizes = new Set();
-    selectedColorVariants.forEach((variant) => {
-      const sizeAttr = variant.attributes.find((attr) => attr.name === "Beden");
-      if (sizeAttr && sizeAttr.selectable) {
-        availableSizes.add(sizeAttr.value);
-      }
-    });
-
-    const updatedSelectableAttributes = data.selectableAttributes.map(
-      (attr) => {
-        if (attr.name === "Beden") {
-          const updatedValues = attr.values.map((value) => ({
-            value,
-            selectable: availableSizes.has(value),
-          }));
-          return { ...attr, values: updatedValues };
-        }
-        return attr;
-      }
-    );
-
-    // Güncellenmiş seçilebilir özellikleri set etme
-    setState(updatedSelectableAttributes);
   };
 
   return (
@@ -114,15 +80,55 @@ const ProSelectAtt = ({
 
           <div className="flex flex-wrap sm:flex-nowrap">
             {info[index].values.map((value, innerIndex, array) => {
-              console.log(array);
-              <ProSelectButton
-                key={innerIndex}
-                value={value}
-                innerIndex={innerIndex}
-                index={index}
-                baremList={baremList}
-                setVariant={setVariant}
-              />;
+              if (info[index].name == "Renk") {
+                return (
+                  <button
+                    key={innerIndex}
+                    type="button"
+                    onClick={() => {
+                      setMainColor(value), handleAddToCart("color", value);
+
+                      setVariant(
+                        data.productVariants.filter((item) => {
+                          return (
+                            item.attributes[1].value.toLocaleLowerCase() ==
+                            value.toLocaleLowerCase()
+                          );
+                        })
+                      );
+                    }}
+                    className={`button ${
+                      mainSize === value && "bg-slate-300"
+                    } ${mainColor === value && "bg-slate-300"}`}
+                  >
+                    {value}
+                  </button>
+                );
+              } else if (info[index].name == "Beden") {
+                const isSizeActive =
+                  variant.filter((item) => {
+                    return item.attributes[0].value == value;
+                  }).length > 0;
+
+                console.log(isSizeActive);
+                return (
+                  <button
+                    key={innerIndex}
+                    type="button"
+                    onClick={() => {
+                      setMainSize(value), handleAddToCart("size", value);
+                    }}
+                    className={`button ${
+                      mainSize === value && "bg-slate-300"
+                    } ${mainColor === value && "bg-slate-300"} ${
+                      isSizeActive && "bg-red-500"
+                    }`}
+                    disabled={!isSizeActive}
+                  >
+                    {value}
+                  </button>
+                );
+              }
             })}
           </div>
         </div>
