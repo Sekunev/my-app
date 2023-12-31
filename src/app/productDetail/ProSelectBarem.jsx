@@ -101,7 +101,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
 
   return (
     <div className="container mt-3">
-      <div className="bg-slate-200 p-2 w-2/3">
+      <div className="bg-slate-200 p-2 w-full  md:mx-auto">
         {/*section Toptan Fiyat */}
         <div className="flex justify-start">
           <div className="flex items-center">
@@ -161,7 +161,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
         </div>
       </div>
       {/*section Toplam & Stok adedi. */}
-      <div className="flex mt-3 ml-2">
+      <div className="flex flex-col md:flex-row mt-3 md:ml-2">
         <div className="flex">
           <p className="font-bold w-24 text-sm">Toplam</p>
           <span>:</span>
@@ -193,10 +193,10 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
         </div>
       </div>
       {/*section SEPETE EKLE */}
-      <div className="ml-[6.8rem] mt-2">
+      <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center md:justify-between">
         <button
           type="button"
-          className="button addBasketButton font-bold text-white bg-amber-400 w-40"
+          className="button addBasketButton font-bold text-white bg-amber-400 w-full md:w-40 md:mr-2"
           onClick={() => {
             // handleAddToCart();
             // toast.success("Sepete Eklendi!");
@@ -211,7 +211,9 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
         >
           SEPETE EKLE
         </button>
-        <span className="text-cyan-500 text-xs ml-2">Ödeme Seçenekleri</span>
+        <span className="text-cyan-500 text-xs mt-2 md:mt-0">
+          Ödeme Seçenekleri
+        </span>
       </div>
     </div>
   );
