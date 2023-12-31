@@ -1,6 +1,7 @@
 "use client"; // This is a client component 👈🏽
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { findItemID } from "@/services/func";
 
 const ProSelectAtt = ({
   title,
@@ -31,8 +32,9 @@ const ProSelectAtt = ({
       product: title,
     }));
   };
-  console.log("mainSize", mainSize);
-  console.log("mainColor", mainColor);
+
+  // console.log("info", info);
+  // console.log("mainColor", mainColor);
   return (
     <div className="container flex flex-col p-2">
       {/* Section title and stars */}
@@ -78,7 +80,7 @@ const ProSelectAtt = ({
             {item.name}
             <span className="mx-1">:</span>
           </p>
-
+          {/* Section Select Color  */}
           <div className="flex flex-wrap sm:flex-nowrap">
             {info[index].values.map((value, innerIndex) => {
               if (info[index].name == "Renk") {
@@ -108,6 +110,9 @@ const ProSelectAtt = ({
                   </button>
                 );
               } else if (info[index].name == "Beden") {
+                {
+                  /* Section Select Size  */
+                }
                 const isSizeActive =
                   variant.filter((item) => {
                     return item.attributes[0].value == value;
@@ -140,5 +145,4 @@ const ProSelectAtt = ({
     </div>
   );
 };
-
 export default ProSelectAtt;

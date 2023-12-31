@@ -26,7 +26,7 @@ const ProductDetail = () => {
   });
 
   useEffect(() => {
-    // console.log(variant);
+    console.log(variant);
   }, [variant]);
 
   return (
@@ -49,6 +49,7 @@ const ProductDetail = () => {
           <ProSelectBarem
             info={data.baremList}
             productVariant={data.productVariants[0]}
+            variant={variant}
             setAddToCart={setAddToCart}
             addToCart={addToCart}
           />
