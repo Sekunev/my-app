@@ -1,7 +1,7 @@
 "use client"; // This is a client component 👈🏽
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { findItemID } from "@/services/func";
+import { findItemID } from "@/services/useCustomHook";
 
 const ProSelectAtt = ({
   title,

@@ -12,22 +12,22 @@ const ProductSlider = ({ images }) => {
 
   return (
     <div className="container mx-auto">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center ">
         <div className="w-full md:w-2/3">
           <div className="flex justify-center">
             <Image
               src={mainImg}
               alt="product main image"
-              width={300}
-              height={400}
+              width={400}
+              height={550}
               className="h-auto rounded-lg"
               priority={true}
             />
           </div>
 
-          <div className="mt-4 mx-auto grid grid-cols-4 md:grid-cols-none md:flex md:justify-center md:gap-4 w-full max-w-lg">
+          <div className=" mt-4 mx-auto grid grid-cols-4 md:grid-cols-none sm:flex sm:justify-center sm:gap-4  max-w-lg">
             {images.map((image, index) => (
-              <div key={index} className="mb-2 md:mb-0">
+              <div key={index} className="mb-2 md:mb-0 mx-auto">
                 <Image
                   src={image}
                   alt="product alt image"
