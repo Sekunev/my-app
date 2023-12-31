@@ -26,17 +26,14 @@ const ProductDetail = () => {
   });
 
   useEffect(() => {
-    console.log(variant);
+    // console.log(variant);
   }, [variant]);
 
   return (
     <main className="grid grid-cols-1 md:grid-cols-2 mt-2 min-h-screen">
       <Toaster toastOptions={{ duration: 3000 }} />
       <div className="order-1 md:order-1">
-        <ProductSlider
-          images={variant[0].images}
-          variant={data.productVariants}
-        />
+        <ProductSlider images={variant[0].images} />
       </div>
       <div className="order-2 md:order-2">
         <div className="mx-auto max-w-lg px-4 md:px-0">

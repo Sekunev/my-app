@@ -1,12 +1,15 @@
 // "use client"; // This is a client component 👈🏽
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-const ProductSlider = ({ images, variant, setVariant }) => {
+const ProductSlider = ({ images }) => {
   //   //* When the page is first loaded, the 0th element of the photo list will appear as a large photo.
   const [mainImg, setMainImg] = useState(images[0]);
 
-  // console.log("variant", variant);
+  useEffect(() => {
+    setMainImg(images[0]);
+  }, [images]);
+
   return (
     <div className="container mx-auto">
       <div className="flex flex-col items-center">

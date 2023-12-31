@@ -31,7 +31,8 @@ const ProSelectAtt = ({
       product: title,
     }));
   };
-
+  console.log("mainSize", mainSize);
+  console.log("mainColor", mainColor);
   return (
     <div className="container flex flex-col p-2">
       {/* Section title and stars */}
@@ -52,7 +53,7 @@ const ProSelectAtt = ({
         <p className="text-cyan-500 text-xs ml-2">23 Yorum</p>
       </div>
       {/* Section Prices */}
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-col ">
         <div className="flex items-center">
           <h5 className="font-bold">{getMinPrice()} TL</h5>
           <span className="mx-1"> - </span>
@@ -63,7 +64,7 @@ const ProSelectAtt = ({
             </span>
           </h5>
         </div>
-        <span className="text-slate-500 font-xs text-xs mt-2 sm:mt-0 ml-0 sm:ml-2">
+        <span className="text-slate-500 font-xs text-xs mt-2 sm:mt-0 ml-0 ">
           100 Adet(Minimum Sipariş Adedi)
         </span>
       </div>
@@ -79,14 +80,16 @@ const ProSelectAtt = ({
           </p>
 
           <div className="flex flex-wrap sm:flex-nowrap">
-            {info[index].values.map((value, innerIndex, array) => {
+            {info[index].values.map((value, innerIndex) => {
               if (info[index].name == "Renk") {
                 return (
                   <button
                     key={innerIndex}
                     type="button"
                     onClick={() => {
-                      setMainColor(value), handleAddToCart("color", value);
+                      setMainColor(value),
+                        setMainSize(""),
+                        handleAddToCart("color", value);
 
                       setVariant(
                         data.productVariants.filter((item) => {
@@ -97,7 +100,7 @@ const ProSelectAtt = ({
                         })
                       );
                     }}
-                    className={`button ${
+                    className={`button border-slate-500 ${
                       mainSize === value && "bg-slate-300"
                     } ${mainColor === value && "bg-slate-300"}`}
                   >
@@ -110,7 +113,7 @@ const ProSelectAtt = ({
                     return item.attributes[0].value == value;
                   }).length > 0;
 
-                console.log(isSizeActive);
+                // console.log(variant, variant);
                 return (
                   <button
                     key={innerIndex}
@@ -121,8 +124,9 @@ const ProSelectAtt = ({
                     className={`button ${
                       mainSize === value && "bg-slate-300"
                     } ${mainColor === value && "bg-slate-300"} ${
-                      isSizeActive && "bg-red-500"
-                    }`}
+                      !isSizeActive && "border-red-500"
+                    } ${isSizeActive && "border-green-500"}`}
+                    // ${isSizeActive && "bg-red-500"}
                     disabled={!isSizeActive}
                   >
                     {value}

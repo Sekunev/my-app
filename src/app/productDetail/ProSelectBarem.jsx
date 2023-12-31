@@ -97,7 +97,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
     }
   }, [inputValue, selectedPrice, setAddToCart]);
 
-  // console.log("addToCart", addToCart);
+  console.log("addToCart", addToCart);
 
   return (
     <div className="container mt-3">
@@ -193,7 +193,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, productVariant }) => {
         </div>
       </div>
       {/*section SEPETE EKLE */}
-      <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center md:justify-between">
+      <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center ">
         <button
           type="button"
           className="button addBasketButton font-bold text-white bg-amber-400 w-full md:w-40 md:mr-2"
