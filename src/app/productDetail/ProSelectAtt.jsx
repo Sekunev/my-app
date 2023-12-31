@@ -1,10 +1,19 @@
 "use client"; // This is a client component 👈🏽
 import Image from "next/image";
 import React, { useState } from "react";
+import ProSelectButton from "./ProSelectButton";
 
-const ProSelectAtt = ({ title, info, setAddToCart, baremList }) => {
+const ProSelectAtt = ({
+  title,
+  info,
+  setAddToCart,
+  baremList,
+  setVariant,
+  data,
+}) => {
   const [mainColor, setMainColor] = useState(info[0].values[0]);
   const [mainSize, setMainSize] = useState(info[1].values[0]);
+  const [State, setState] = useState();
 
   const getMinPrice = () => {
     const minPrice = Math.min(...baremList.map((item) => item.price));
@@ -22,6 +31,39 @@ const ProSelectAtt = ({ title, info, setAddToCart, baremList }) => {
       [key]: value,
       product: title,
     }));
+  };
+
+  // Kullanıcı seçimi üzerine tüm seçenekleri kontrol etme
+  const updateSelectableAttributes = (selectedColor) => {
+    const selectedColorVariants = data.productVariants.filter((variant) =>
+      variant.attributes.find(
+        (attr) => attr.name === "Renk" && attr.value === selectedColor
+      )
+    );
+
+    const availableSizes = new Set();
+    selectedColorVariants.forEach((variant) => {
+      const sizeAttr = variant.attributes.find((attr) => attr.name === "Beden");
+      if (sizeAttr && sizeAttr.selectable) {
+        availableSizes.add(sizeAttr.value);
+      }
+    });
+
+    const updatedSelectableAttributes = data.selectableAttributes.map(
+      (attr) => {
+        if (attr.name === "Beden") {
+          const updatedValues = attr.values.map((value) => ({
+            value,
+            selectable: availableSizes.has(value),
+          }));
+          return { ...attr, values: updatedValues };
+        }
+        return attr;
+      }
+    );
+
+    // Güncellenmiş seçilebilir özellikleri set etme
+    setState(updatedSelectableAttributes);
   };
 
   return (
@@ -71,25 +113,17 @@ const ProSelectAtt = ({ title, info, setAddToCart, baremList }) => {
           </p>
 
           <div className="flex flex-wrap sm:flex-nowrap">
-            {info[index].values.map((value, innerIndex) => (
-              <button
+            {info[index].values.map((value, innerIndex, array) => {
+              console.log(array);
+              <ProSelectButton
                 key={innerIndex}
-                type="button"
-                onClick={() => {
-                  index === 0
-                    ? (setMainColor(value), handleAddToCart("color", value))
-                    : (setMainSize(value), handleAddToCart("size", value));
-                }}
-                className={`button ${
-                  (index === 0 && mainColor === value) ||
-                  (index === 1 && mainSize === value)
-                    ? "bg-slate-300"
-                    : ""
-                }`}
-              >
-                {value}
-              </button>
-            ))}
+                value={value}
+                innerIndex={innerIndex}
+                index={index}
+                baremList={baremList}
+                setVariant={setVariant}
+              />;
+            })}
           </div>
         </div>
       ))}

@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-const ProductSlider = ({ images }) => {
+const ProductSlider = ({ images, variant, setVariant }) => {
   //   //* When the page is first loaded, the 0th element of the photo list will appear as a large photo.
   const [mainImg, setMainImg] = useState(images[0]);
 
+  // console.log("variant", variant);
   return (
     <div className="container mx-auto">
       <div className="flex flex-col items-center">
