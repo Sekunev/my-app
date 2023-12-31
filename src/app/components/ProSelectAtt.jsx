@@ -1,7 +1,6 @@
 "use client"; // This is a client component 👈🏽
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { findItemID } from "@/services/useCustomHook";
+import React, { useState } from "react";
 
 const ProSelectAtt = ({
   title,
@@ -12,19 +11,22 @@ const ProSelectAtt = ({
   data,
   variant,
 }) => {
-  const [mainColor, setMainColor] = useState(info[0].values[0]);
-  const [mainSize, setMainSize] = useState(info[1].values[0]);
+  const [mainColor, setMainColor] = useState(info[0].values[0]); //? Selected product color
+  const [mainSize, setMainSize] = useState(info[1].values[0]); //? Selected product size
 
+  //* lowest price
   const getMinPrice = () => {
     const minPrice = Math.min(...baremList.map((item) => item.price));
     return minPrice;
   };
 
+  //* highest price
   const getMaxPrice = () => {
     const maxPrice = Math.max(...baremList.map((item) => item.price));
     return maxPrice;
   };
 
+  //* Add selected data to Cart
   const handleAddToCart = (key, value) => {
     setAddToCart((prev) => ({
       ...prev,
@@ -33,13 +35,32 @@ const ProSelectAtt = ({
     }));
   };
 
-  // console.log("info", info);
-  // console.log("mainColor", mainColor);
+  //* What happens when you click on the color selection button
+  const handleClickColorButton = (value) => {
+    setMainColor(value);
+    setMainSize("");
+    handleAddToCart("color", value);
+    setVariant(
+      data.productVariants.filter((item) => {
+        return (
+          item.attributes[1].value.toLocaleLowerCase() ===
+          value.toLocaleLowerCase()
+        );
+      })
+    );
+  };
+
+  //* What happens when you click on the size selection button
+  const handleClickSizeButton = (value) => {
+    setMainSize(value), handleAddToCart("size", value);
+  };
+
   return (
     <div className="container flex flex-col p-2">
       {/* Section title and stars */}
       <h3 className="text-xl font-sans">{title}</h3>
       <div className="flex mb-4 mt-2 items-center">
+        {/* Create 5 stars */}
         {Array(5)
           .fill()
           .map((_, index) => (
@@ -54,6 +75,7 @@ const ProSelectAtt = ({
           ))}
         <p className="text-cyan-500 text-xs ml-2">23 Yorum</p>
       </div>
+
       {/* Section Prices */}
       <div className="flex flex-col ">
         <div className="flex items-center">
@@ -70,6 +92,7 @@ const ProSelectAtt = ({
           100 Adet(Minimum Sipariş Adedi)
         </span>
       </div>
+
       {/* Section Select Color and Size */}
       {info.map((item, index) => (
         <div
@@ -80,6 +103,7 @@ const ProSelectAtt = ({
             {item.name}
             <span className="mx-1">:</span>
           </p>
+
           {/* Section Select Color  */}
           <div className="flex flex-wrap sm:flex-nowrap">
             {info[index].values.map((value, innerIndex) => {
@@ -88,20 +112,7 @@ const ProSelectAtt = ({
                   <button
                     key={innerIndex}
                     type="button"
-                    onClick={() => {
-                      setMainColor(value),
-                        setMainSize(""),
-                        handleAddToCart("color", value);
-
-                      setVariant(
-                        data.productVariants.filter((item) => {
-                          return (
-                            item.attributes[1].value.toLocaleLowerCase() ==
-                            value.toLocaleLowerCase()
-                          );
-                        })
-                      );
-                    }}
+                    onClick={() => handleClickColorButton(value)}
                     className={`button border-slate-500 ${
                       mainSize === value && "bg-slate-300"
                     } ${mainColor === value && "bg-slate-300"}`}
@@ -113,25 +124,21 @@ const ProSelectAtt = ({
                 {
                   /* Section Select Size  */
                 }
+                //* Is there a size in the selected color?
                 const isSizeActive =
                   variant.filter((item) => {
                     return item.attributes[0].value == value;
                   }).length > 0;
-
-                // console.log(variant, variant);
                 return (
                   <button
                     key={innerIndex}
                     type="button"
-                    onClick={() => {
-                      setMainSize(value), handleAddToCart("size", value);
-                    }}
+                    onClick={() => handleClickSizeButton(value)}
                     className={`button ${
                       mainSize === value && "bg-slate-300"
                     } ${mainColor === value && "bg-slate-300"} ${
                       !isSizeActive && "border-red-500"
                     } ${isSizeActive && "border-green-500"}`}
-                    // ${isSizeActive && "bg-red-500"}
                     disabled={!isSizeActive}
                   >
                     {value}

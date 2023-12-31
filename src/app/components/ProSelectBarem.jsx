@@ -2,45 +2,15 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-// import { handleAddToCart } from "@/services/func";
-// import { findItemID } from "@/services/func";
-// import useHook from "@/services/func";
+import AddToCart from "./AddToCart";
 
-const ProSelectBarem = ({
-  info,
-  setAddToCart,
-  addToCart,
-  productVariant,
-  variant,
-}) => {
-  // const { handleAddToCart, findItemID } = useHook();
-  // findItemID();
+const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
   const [inputValue, setInputValue] = useState("");
-  const [amountStok, setAmountStok] = useState(0);
-  const [selectedPrice, setSelectedPrice] = useState("");
+  const [amountStok, setAmountStok] = useState(0); // *The amount of stock
+  const [selectedPrice, setSelectedPrice] = useState(""); //* Selected price
   const [totalPriceState, setTotalPriceState] = useState(0);
 
-  //? isAllDataFilled Checks whether all the data to be added to the cart is filled or not
-  const isAllDataFilled =
-    // addToCart.id !== "" &&
-    addToCart.size !== "" &&
-    addToCart.amount !== "" &&
-    addToCart.color !== "" &&
-    addToCart.price !== "" &&
-    addToCart.product !== "" &&
-    addToCart.totalPrice !== "";
-
-  //? Assign id to addToCart when adding to cart
-  // const handleAddToCart = () => {
-  //   setAddToCart((prev) => ({
-  //     ...prev,
-  //     id: productVariant.id, // Yeni ID'yi "addToCart" içindeki "id" özelliğine ata
-  //   }));
-  // };
-
-  // console.log("variant", variant);
-
-  // Prevent the entry of more than the stock quantity, other than numbers, and negative values into the input field
+  //? Prevent the entry of more than the stock quantity, other than numbers, and negative values into the input field
   const handleInputChange = (event) => {
     const { value } = event.target;
     const parsedValue = parseInt(value, 10);
@@ -59,11 +29,11 @@ const ProSelectBarem = ({
   // Assign the maximum Quantity value of the last element of the array to Amount Stock state
   useEffect(() => {
     function getMaxQuantityLastItem(info) {
-      const lastItem = info[info?.length - 1]; // Dizinin son elemanı
-      return lastItem.maximumQuantity; // Değeri döndür
+      const lastItem = info[info?.length - 1]; // Last element of the array
+      return lastItem.maximumQuantity;
     }
     const maxQuantity = getMaxQuantityLastItem(info);
-    setAmountStok(maxQuantity); // Durumu güncelle
+    setAmountStok(maxQuantity); // The amount of stock
   }, []);
 
   //? Assign the relevant object in baremList to selectedInfo according to the value entered into input. Fill in the items to add to the cart
@@ -73,7 +43,7 @@ const ProSelectBarem = ({
         inputValue >= item.minimumQuantity && inputValue <= item.maximumQuantity
     );
 
-    // console.log("selectedInfo", selectedInfo);>> {minimumQuantity: 120, maximumQuantity: 599, price: 9.5}
+    //selected barem console.log("selectedInfo", selectedInfo);>> {minimumQuantity: 120, maximumQuantity: 599, price: 9.5}
 
     if (selectedInfo) {
       setSelectedPrice(selectedInfo.price);
@@ -87,7 +57,7 @@ const ProSelectBarem = ({
 
   //? Perform the necessary mathematical operation for totalPrice.
   useEffect(() => {
-    // inputValue boşsa totalPrice'ı sıfırla
+    //* Reset totalPrice if inputValue is empty
     if (inputValue === "") {
       setTotalPriceState(0);
       setAddToCart((prev) => ({
@@ -95,7 +65,7 @@ const ProSelectBarem = ({
         totalPrice: 0,
       }));
     } else {
-      // Değilse, totalPrice'ı hesapla
+      //* If not, calculate totalPrice
       const calculateTotalPrice = () => {
         const price = selectedPrice || 0;
         const amount = inputValue || 0;
@@ -110,33 +80,6 @@ const ProSelectBarem = ({
       calculateTotalPrice();
     }
   }, [inputValue, selectedPrice, setAddToCart]);
-
-  const findItemID = () => {
-    // console.log("variant", variant);
-    const selectedItem = variant.find(
-      (variant) =>
-        variant.attributes.some(
-          (attr) => attr.name === "Renk" && attr.value === addToCart.color
-        ) &&
-        variant.attributes.some(
-          (attr) => attr.name === "Beden" && attr.value === addToCart.size
-        )
-    );
-
-    if (selectedItem) {
-      return selectedItem.id;
-    }
-
-    return "Böyle bir ürün bulunamadı.";
-  };
-
-  const handleAddToCart = (key, value) => {
-    setAddToCart((prev) => ({
-      ...prev,
-      [key]: value,
-      id: findItemID(),
-    }));
-  };
 
   console.log("addToCart", addToCart);
 
@@ -234,30 +177,11 @@ const ProSelectBarem = ({
         </div>
       </div>
       {/*section SEPETE EKLE */}
-      <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center ">
-        <button
-          type="button"
-          className={`button addBasketButton font-bold text-white bg-amber-400 w-full md:w-40 md:mr-2 ${
-            isAllDataFilled || "bg-slate-500"
-          } ${isAllDataFilled || "hover:bg-slate-700"}`}
-          onClick={() => {
-            // handleAddToCart();
-            // toast.success("Sepete Eklendi!");
-            if (!isAllDataFilled) {
-              toast.error("Ürün Sepete Eklenemedi!");
-              return;
-            }
-            handleAddToCart();
-            toast.success("Ürün Sepete Eklendi!");
-          }}
-          disabled={!isAllDataFilled}
-        >
-          SEPETE EKLE
-        </button>
-        <span className="text-cyan-500 text-xs mt-2 md:mt-0">
-          Ödeme Seçenekleri
-        </span>
-      </div>
+      <AddToCart
+        addToCart={addToCart}
+        variant={variant}
+        setAddToCart={setAddToCart}
+      />
     </div>
   );
 };

@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { data } from "../../services/data";
 import ProductSlider from "../components/ProductSlider";
-import ProSelectAtt from "./ProSelectAtt";
-import ProSelectBarem from "./ProSelectBarem";
-import { Toaster } from "react-hot-toast";
+import ProSelectAtt from "../components/ProSelectAtt";
+import ProSelectBarem from "../components/ProSelectBarem";
 
 const ProductDetail = () => {
+  //! variant: State where products of the selected color are stored Objects with black items as the initial value.
   const [variant, setVariant] = useState(
     data.productVariants.filter((item) => {
       return (
@@ -15,6 +15,8 @@ const ProductDetail = () => {
       );
     })
   );
+
+  //! addToCart: Data added to cart
   const [addToCart, setAddToCart] = useState({
     id: "",
     size: "",
@@ -25,13 +27,8 @@ const ProductDetail = () => {
     totalPrice: "",
   });
 
-  useEffect(() => {
-    console.log(variant);
-  }, [variant]);
-
   return (
     <main className="grid grid-cols-1 md:grid-cols-2 mt-2 min-h-screen">
-      <Toaster toastOptions={{ duration: 3000 }} />
       <div className="order-1 md:order-1">
         <ProductSlider images={variant[0].images} />
       </div>
@@ -40,15 +37,14 @@ const ProductDetail = () => {
           <ProSelectAtt
             data={data}
             title={data.productTitle}
-            info={data.selectableAttributes}
-            baremList={data.baremList}
+            info={data.selectableAttributes} //? Size list by colors
+            baremList={data.baremList} //? Quantities and prices
             setAddToCart={setAddToCart}
             setVariant={setVariant}
             variant={variant}
           />
           <ProSelectBarem
-            info={data.baremList}
-            productVariant={data.productVariants[0]}
+            info={data.baremList} //? Quantities and prices
             variant={variant}
             setAddToCart={setAddToCart}
             addToCart={addToCart}

@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const ProductSlider = ({ images }) => {
-  //   //* When the page is first loaded, the 0th element of the photo list will appear as a large photo.
+  //* When the page is first loaded, the 0th element of the photo list will appear as a large photo.
   const [mainImg, setMainImg] = useState(images[0]);
 
+  //* Update mainImg when images coming as probs change.
   useEffect(() => {
     setMainImg(images[0]);
   }, [images]);
