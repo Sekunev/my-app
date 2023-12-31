@@ -6,6 +6,7 @@ import AddToCart from "./AddToCart";
 
 const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
   const [inputValue, setInputValue] = useState("");
+  console.log(inputValue);
   const [amountStok, setAmountStok] = useState(0); // *The amount of stock
   const [selectedPrice, setSelectedPrice] = useState(""); //* Selected price
   const [totalPriceState, setTotalPriceState] = useState(0);
@@ -81,8 +82,6 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
     }
   }, [inputValue, selectedPrice, setAddToCart]);
 
-  console.log("addToCart", addToCart);
-
   return (
     <div className="container mt-3">
       <div className="bg-slate-200 p-2 w-full  md:mx-auto">
@@ -129,7 +128,6 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
               value={inputValue}
               onChange={handleInputChange}
               min="100"
-              max="10"
               className=" ml-1 rounded p-1 w-16 text-xs text-center border-gray-300 focus:border-gray-400 outline-none px-4 "
             />
             <p className="text-xs ml-2">Adet</p>
@@ -181,6 +179,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
         addToCart={addToCart}
         variant={variant}
         setAddToCart={setAddToCart}
+        inputValue={inputValue}
       />
     </div>
   );

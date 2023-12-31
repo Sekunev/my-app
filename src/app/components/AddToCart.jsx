@@ -1,11 +1,12 @@
 import React from "react";
 import toast from "react-hot-toast";
 
-const AddToCart = ({ addToCart, variant, setAddToCart }) => {
-  //? isAllDataFilled Checks whether all the data to be added to the cart is filled or not
+const AddToCart = ({ addToCart, variant, setAddToCart, inputValue }) => {
+  //? isAllDataFilled Checks whether all data to be added to the cart complies with the rules
   const isAllDataFilled =
     addToCart.size !== "" &&
     addToCart.amount !== "" &&
+    inputValue >= 120 &&
     addToCart.color !== "" &&
     addToCart.price !== "" &&
     addToCart.product !== "" &&
@@ -38,7 +39,7 @@ const AddToCart = ({ addToCart, variant, setAddToCart }) => {
       id: findItemID(),
     }));
   };
-
+  console.log("addToCart", addToCart);
   return (
     <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center ">
       <button
