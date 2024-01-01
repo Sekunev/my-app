@@ -41,7 +41,7 @@ const AddToCart = ({ addToCart, variant, setAddToCart, inputValue }) => {
     }));
   };
   console.log("addToCart", addToCart);
-  console.log("isAllDataFilled", isAllDataFilled);
+
   return (
     <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center ">
       <button
