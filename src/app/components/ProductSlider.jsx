@@ -19,8 +19,8 @@ const ProductSlider = ({ images }) => {
             <Image
               src={mainImg}
               alt="product main image"
-              width={400}
-              height={550}
+              width={600}
+              height={750}
               className="h-auto rounded-lg"
               priority={true}
             />

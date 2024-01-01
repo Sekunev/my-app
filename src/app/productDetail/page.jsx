@@ -28,11 +28,11 @@ const ProductDetail = () => {
   });
 
   return (
-    <main className="grid grid-cols-1 md:grid-cols-2 mt-2 min-h-screen">
-      <div className="order-1 md:order-1">
+    <main className="container grid grid-cols-1 md:grid-cols-2 px-2 mt-2 pt-10  min-h-screen">
+      <div className="order-1 md:order-1 ">
         <ProductSlider images={variant[0].images} />
       </div>
-      <div className="order-2 md:order-2">
+      <div className="order-2 md:order-2 ">
         <div className="mx-auto max-w-lg px-4 md:px-0">
           <ProSelectAtt
             data={data}

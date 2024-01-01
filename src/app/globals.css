@@ -40,19 +40,19 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.5;
-  color: #000;
+  /* color: #000; */
   transition-property: all;
   transition-duration: 150ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: 0ms;
 }
-.button:hover {
+/* .button:hover {
   border-color: rgb(148 163 184);
   background-color: rgb(226 232 240);
-}
+} */
 .button_active {
-  outline-color: rgb(100, 85, 85);
-  border-width: 12x;
+  outline-color: rgb(87, 75, 75);
+  border-width: 15px;
 }
 
 .addBasketButton {
@@ -60,12 +60,12 @@ body {
   border-color: rgb(219, 171, 11);
   font-weight: 600;
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  /* color: rgb(255 255 255 / var(--tw-text-opacity)); */
 }
-.addBasketButton:hover {
+/* .addBasketButton:hover {
   border-color: rgb(219, 171, 11);
   background-color: rgb(219, 171, 11);
-}
+} */
 
 /* tarayıcılarda input yukarı/aşağı okları gizle */
 input[type="number"]::-webkit-inner-spin-button,

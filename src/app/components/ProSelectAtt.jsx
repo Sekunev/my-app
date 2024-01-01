@@ -114,8 +114,8 @@ const ProSelectAtt = ({
                     type="button"
                     onClick={() => handleClickColorButton(value)}
                     className={`button border-slate-500 ${
-                      mainSize === value && "bg-slate-300"
-                    } ${mainColor === value && "bg-slate-300"}`}
+                      mainSize === value && "bg-slate-400"
+                    } ${mainColor === value && "bg-slate-400"}`}
                   >
                     {value}
                   </button>

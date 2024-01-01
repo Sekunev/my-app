@@ -6,6 +6,7 @@ const AddToCart = ({ addToCart, variant, setAddToCart, inputValue }) => {
   const isAllDataFilled =
     addToCart.size !== "" &&
     addToCart.amount !== "" &&
+    parseInt(addToCart.amount) >= 120 &&
     inputValue >= 120 &&
     addToCart.color !== "" &&
     addToCart.price !== "" &&
@@ -40,13 +41,17 @@ const AddToCart = ({ addToCart, variant, setAddToCart, inputValue }) => {
     }));
   };
   console.log("addToCart", addToCart);
+  console.log("isAllDataFilled", isAllDataFilled);
   return (
     <div className="md:ml-[6.8rem] mt-2 md:flex md:items-center ">
       <button
         type="button"
-        className={`button addBasketButton font-bold text-white bg-amber-400 w-full md:w-40 md:mr-2 ${
-          isAllDataFilled || "bg-slate-500"
-        } ${isAllDataFilled || "hover:bg-slate-700"}`}
+        className={`button addBasketButton font-bold bg-amber-500 w-full md:w-40 md:mr-2 ${
+          isAllDataFilled
+            ? "text-white hover:bg-amber-600"
+            : "text-gray-600 bg-yellow-300 "
+        } `}
+        // ${isAllDataFilled || "hover:bg-amber-100 "}
         onClick={() => {
           if (!isAllDataFilled) {
             toast.error("Ürün Sepete Eklenemedi!");

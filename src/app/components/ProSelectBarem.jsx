@@ -135,7 +135,8 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
             <p className="text-xs items-center shadow-2xl font-medium">
               Stok adedi:{" "}
               <span className="font-bold">
-                {String(amountStok).slice(0, 4)}
+                {/* {String(amountStok).slice(0, 4)} */}
+                {amountStok}
               </span>
             </p>
           </div>
@@ -153,7 +154,7 @@ const ProSelectBarem = ({ info, setAddToCart, addToCart, variant }) => {
               {totalPriceState.toLocaleString("tr-TR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-              })}
+              })}{" "}
               TL
             </p>
           </div>
